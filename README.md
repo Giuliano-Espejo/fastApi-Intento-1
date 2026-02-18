@@ -43,8 +43,8 @@ Este backend está pensado como base sólida, clara y extensible, priorizando le
 ### 1️⃣ Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
+git clone https://github.com/Giuliano-Espejo/fastApi-Intento-1
+cd fastApi-Intento-1
 ```
 
 ### 2️⃣ Crear entorno virtual
