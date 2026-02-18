@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from models.estadoPedido import EstadoPedido
 from models.metodoPago import MetodoPago
 
-from .detalle_pedido import DetallePedidoCreate, DetallePedidoDto
+from schemas.detalle_pedido import DetallePedidoCreate, DetallePedidoDto
 
 class PedidoCreate(BaseModel):
     """
@@ -12,7 +12,7 @@ class PedidoCreate(BaseModel):
 
     Se usa para crear pedidos.
     """
-
+    usuario_id:int
     forma_pago: MetodoPago
     detalles: List[DetallePedidoCreate]
 

@@ -1,12 +1,4 @@
 from pydantic import BaseModel
-class UsuarioLogin(BaseModel):
-    """
-    DTO para logear usuarios.
-    """
-
-    nombre: str
-    email: str
-
 
 class UsuarioDto(BaseModel):
     """
@@ -15,7 +7,9 @@ class UsuarioDto(BaseModel):
 
     id: int
     nombre: str
-    email: str
+    apellido:str
+    mail: str
+    celular: int
 
 class UsuarioCreate(BaseModel):
     """
@@ -29,6 +23,7 @@ class UsuarioCreate(BaseModel):
     contrasena: str
 
 class UsuarioEdit(BaseModel):
+    id: int
     mail: str
     celular: int
 

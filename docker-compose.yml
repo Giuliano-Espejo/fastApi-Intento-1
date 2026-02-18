@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  # ─── Base de datos PostgreSQL ───────────────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    container_name: fastapi_db
+    restart: always
+    environment:
+      POSTGRES_USER: fastapi_user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: fastapi_app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fastapi_user -d fastapi_app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── API FastAPI ─────────────────────────────────────────────────────────────
+  api:
+    build: .
+    container_name: fastapi_api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://fastapi_user:secret@db:5432/fastapi_app
+      PYTHONPATH: /app/app
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Monta el código local para que --reload detecte cambios en tiempo real
+      - ./:/app
+    command: >
+      sh -c "
+        echo '⏳ Esperando a PostgreSQL...' &&
+        echo '🗄️  Creando tablas si no existen...' &&
+        python -c 'from core.database import create_db_and_tables; create_db_and_tables()' &&
+        echo '🚀 Iniciando API en modo desarrollo...' &&
+        uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      "
+
+volumes:
+  postgres_data:
+
+# ─── Comandos útiles ────────────────────────────────────────────────────────
+# Levantar servicios:        docker-compose up -d
+# Ver logs en tiempo real:   docker-compose logs -f api
+# Ver logs de la DB:         docker-compose logs -f db
+# Detener servicios:         docker-compose down
+# Eliminar todo + volúmenes: docker-compose down -v
+# Reconstruir imagen:        docker-compose up -d --build

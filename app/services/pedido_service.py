@@ -6,6 +6,7 @@ from datetime import date
 from sqlmodel import Session, select
 
 # Entidades del dominio (persistentes)
+from models.usuario import Usuario
 from models.estadoPedido import EstadoPedido
 from schemas.detalle_pedido import DetallePedidoDto
 from models.pedido import Pedido
@@ -42,6 +43,11 @@ class PedidoService:
 
         detalles: list[DetallePedido] = []
 
+        usuario = session.get(Usuario, pedido_create.usuario_id)
+        if usuario is None:
+                raise ValueError(f"Usuario {pedido_create.usuario_id} no existe")
+        
+        pedido.usuario_id = pedido_create.usuario_id
         # 2. Procesar cada detalle
         for detalle in pedido_create.detalles:
 

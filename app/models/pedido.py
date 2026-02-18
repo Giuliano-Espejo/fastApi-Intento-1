@@ -1,8 +1,9 @@
 from typing import Optional, List
+from models.usuario import Usuario
 from models.estadoPedido import EstadoPedido
 from models.metodoPago import MetodoPago
 from sqlmodel import SQLModel, Field, Relationship
-from .detallePedido import DetallePedido
+from models.detallePedido import DetallePedido
 
 class Pedido(SQLModel, table=True):
     """
@@ -45,3 +46,7 @@ class Pedido(SQLModel, table=True):
             "cascade": "all, delete-orphan"
         }
     )
+
+    usuario_id: int = Field(foreign_key="usuario.id")
+
+    usuario: Optional["Usuario"] = Relationship(back_populates="pedidos")

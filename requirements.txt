@@ -3,3 +3,4 @@ uvicorn[standard]
 sqlmodel
 sqlalchemy
 pydantic
+psycopg[binary]>=3.1

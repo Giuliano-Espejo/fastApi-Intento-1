@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field, Relationship
 
-from .categoria import Categoria
+from models.categoria import Categoria
 
 
 class Producto(SQLModel, table=True):

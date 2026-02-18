@@ -1,6 +1,5 @@
 from typing import List, Optional
-from app.models.pedido import Pedido
-from app.models.rol import Rol
+from models.rol import Rol
 from sqlmodel import SQLModel, Field, Relationship
 
 
@@ -31,9 +30,15 @@ class Usuario(SQLModel, table=True):
         nullable=False
     )
 
+    apellido: str = Field(
+        min_length=3,
+        max_length=50,
+        nullable=False
+    )
+
     # Email del usuario
     # Es único porque identifica al usuario en el sistema
-    email: str = Field(
+    mail: str = Field(
         index=True,
         nullable=False,
         max_length=100
@@ -49,9 +54,11 @@ class Usuario(SQLModel, table=True):
         default=True
     )
 
- # Relación con Pedido (unidireccional desde Usuario)
-    pedidos: List[Pedido] = Relationship(
-        sa_relationship_kwargs={
-            "cascade": "all, delete-orphan"
-        }
+    celular: str = Field(
+        min_length=9,
+        max_length=9,
+        nullable=False
     )
+
+ # Relación con Pedido 
+    pedidos: List["Pedido"] = Relationship()

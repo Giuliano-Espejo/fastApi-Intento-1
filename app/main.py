@@ -5,7 +5,7 @@ from fastapi import FastAPI
 # Importamos la función que crea las tablas
 from core.database import create_db_and_tables
 
-from routers import categoria, pedido, producto
+from routers import categoria, pedido, producto, usuario
 
 # Crea la instancia de la aplicación.
 # Acá FastAPI empieza a existir.
@@ -26,6 +26,10 @@ app.include_router(
 
 app.include_router(
     pedido.router
+)
+
+app.include_router(
+    usuario.router
 )
 
 
